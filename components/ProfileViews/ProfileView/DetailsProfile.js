@@ -19,7 +19,7 @@ function DetailsComponent (props) {
             style={Styles.inputV2}
             editable={false}
         />
-        <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}E-mail</Text>
+        <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}Email</Text>
         <TextInput
             value={props.globalUser.username}
             placeholder={props.globalUser.username}
