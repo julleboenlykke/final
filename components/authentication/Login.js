@@ -62,7 +62,7 @@ function Login({navigation}) {
                 <TextInput
                     value={username}
                     onChangeText={(username) => setUsername( username)}
-                    placeholder={'Username'}
+                    placeholder={'Email'}
                     style={Styles.input}
                 />
                 <TextInput
