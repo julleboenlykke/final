@@ -1,18 +1,18 @@
-import {View, Text, Platform, FlatList, StyleSheet, Button, Alert, ScrollView, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Platform, StyleSheet, Button, Alert, ScrollView, Image, TouchableOpacity,} from 'react-native';
 import firebase from 'firebase/compat';
 import {useEffect, useState} from "react";
 import React, { Component } from 'react'
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const Details = ({route,navigation}) => {
+// Funktion der benyttes til at ændre status af event
+const Details = ({route,navigation, props}) => {
     const [event,setEvent] = useState({});
     const [value, setValue] = useState("Tilmeld event");
 
+    // Funktion der kører, i det øjeblik siden bliver indlæst
     useEffect(() => {
-        /*Henter car values og sætter dem*/
         setEvent(route.params.event[1]);
 
-        /*Når vi forlader screen, tøm object*/
         return () => {
             setEvent({})
         }
@@ -24,16 +24,18 @@ const Details = ({route,navigation}) => {
         navigation.navigate('Edit Event', { event });
     };
 
+    // Tilmelding af event
     const tilmeld = () => {
-        /*Er det mobile?*/
+
         if(Platform.OS ==='ios' || Platform.OS ==='android'){
             Alert.alert('Du er tilmeldt event' );
             setValue("Du er tilmeldt event");
         }
     };
 
+    // Afmeld tilmelding af event
     const afmeld = () => {
-        /*Er det mobile?*/
+
         if(Platform.OS ==='ios' || Platform.OS ==='android'){
             Alert.alert('Du er afmeldt event' );
             setValue("Du er afmeldt event");
@@ -41,9 +43,9 @@ const Details = ({route,navigation}) => {
     };
 
 
-    // Vi spørger brugeren om han er sikker
+    // Spørger brugeren om de er sikker på, at de vil slette et event
     const confirmDelete = () => {
-        /*Er det mobile?*/
+
         if(Platform.OS ==='ios' || Platform.OS ==='android'){
             Alert.alert('Are you sure?', 'Do you want to delete the event?', [
                 { text: 'Cancel', style: 'cancel' },
@@ -54,17 +56,16 @@ const Details = ({route,navigation}) => {
     };
 
 
-    // Vi sletter den aktuelle bil
+    // Sletter et event
     const  handleDelete = () => {
         const id = route.params.event[0];
         try {
             firebase
                 .database()
-                // Vi sætter bilens ID ind i stien
+                // Bruger eventets id til at slette det
                 .ref(`/Event/${id}`)
-                // Og fjerner data fra den sti
                 .remove();
-            // Og går tilbage når det er udført
+            // Går tilbage når eventet er slettet
             navigation.goBack();
         } catch (error) {
             Alert.alert(error.message);
@@ -78,28 +79,29 @@ const Details = ({route,navigation}) => {
 
     //all content
     return (
-        <View style={{backgroundColor: "#E3DBDB"}}>
+        <View style={{backgroundColor: "#E3DBDB", paddingBottom: "15%"}}>
+            {/* Knap til at gå tilbage */}
             <TouchableOpacity onPress={() => navigation.goBack()} >
                 <Ionicons name="arrow-back" style={{top: 20, fontSize:45, margin: 10, color:'#4E3D42'}} />
             </TouchableOpacity>
+            <Text style={styles.title}>Details</Text>
             <ScrollView style={styles.root}>
-                <Text style={styles.title}>
-                    Details
-                </Text>
+                {/* Billedet der ses på alle events */}
                 <View style={styles.container}>
                     <Image style={styles.event} source={require("../../../assets/event.jpg")}/>
                     {
                         Object.entries(event).map((item,index)=>{
                             return(
                                 <View style={styles.row} key={index}>
-                                    {/*Vores car keys navn*/}
+                                    {/* Event titler */}
                                     <Text style={styles.label}>{item[0]} </Text>
-                                    {/*Vores car values navne */}
+                                    {/* Værdiernes navne */}
                                     <Text style={styles.value}>{item[1]}</Text>
                                 </View>
                             )
                         })
                     }
+                    {/* Knapper med der giver mulighed for at slette et event mm */}
                     <Text onPress={value} style={{fontSize: 25, paddingTop: 5}}> Status: {value} </Text>
                     <Button title="Edit" onPress={ () => handleEdit()} />
                     <Button title="Delete" onPress={() => confirmDelete()} />
@@ -113,14 +115,16 @@ const Details = ({route,navigation}) => {
 
 export default Details;
 
+//Styling
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
-        paddingBottom: "100%",
+        paddingBottom: 500,
+        paddingTop: 150,
     },
     row: {
         flexDirection: 'row',
-        height: "6%",
+        height: "9%",
         margin: 10,
     },
     label: {
@@ -141,13 +145,11 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         paddingRight: 20,
         backgroundColor: "#E3DBDB",
-        paddingBottom: "35%"
     },
     event: {
         height: 200,
         width: '100%',
         resizeMode: "stretch",
-
     },
     title: {
         fontSize: 70,
@@ -156,6 +158,5 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#4E3D42',
         paddingTop: 5,
-        paddingBottom: "10%"
     }
 });

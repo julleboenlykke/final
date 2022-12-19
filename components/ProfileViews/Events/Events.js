@@ -4,12 +4,13 @@ import firebase from 'firebase/compat';
 import {useEffect, useState} from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
+// Navigere til Events siden
 const navController = (navigation, route) => {
     navigation.navigate(route)
 }
 
 const Events = ({navigation}) => {
-
+    // Finder events der er gemt i firebase
     const [events,setEvents] = useState()
 
     useEffect(() => {
@@ -23,13 +24,16 @@ const Events = ({navigation}) => {
         }
     },[]);
 
-    // Vi viser ingenting hvis der ikke er data
+    // Hvis der er ingen events, vises der en tom side
     if (!events) {
         return(
             <ScrollView style={{backgroundColor: '#E3DBDB'}}>
                 <SafeAreaView style={styles.container}>
                     <View>
+                        {/* Titel på Events siden */}
                         <Text style={styles.title}>Events</Text>
+                        {/* Create knap der ligner et plus */}
+                        {/* Trykkes der på den, navigeres brugeren til en side hvor de kan oprette events */}
                         <TouchableOpacity onPress={() => navController(navigation, "Create")} >
                             <Ionicons name="add-circle-outline" style={{left: 300, top: 2, fontSize:45}} />
                         </TouchableOpacity>
@@ -39,24 +43,28 @@ const Events = ({navigation}) => {
         )
     }
 
+    // Funktion til når man vil se detaljer om et specifikt event
     const handleSelectEvent = id => {
-        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher idet vi har tilsendt*/
+        // Trykker på et event og der søges efter det event med det matchende id
         const event = Object.entries(events).find( event => event[0] === id /*id*/)
         navigation.navigate('Event Details', { event });
     };
 
-    // Flatlist forventer et array. Derfor tager vi alle values fra vores cars objekt, og bruger som array til listen
+    // Tager værdierne fra event objects og bruger dem som array til vores flatlist
     const eventArray = Object.values(events);
     const eventKeys = Object.keys(events);
 
     return (
+        <View style={{backgroundColor: '#E3DBDB', paddingBottom: 110}}>
+            {/* Titel på Events siden */}
+            <Text style={styles.title}>Events</Text>
+            {/* Create knap der ligner et plus */}
+            <TouchableOpacity onPress={() => navController(navigation, "Create")} >
+                <Ionicons name="add-circle-outline" style={{left: 300, top: -5, fontSize:45, color:'#4E3D42'}} />
+            </TouchableOpacity>
         <ScrollView style={{backgroundColor: '#E3DBDB'}}>
             <SafeAreaView style={styles.container}>
                 <View>
-                    <Text style={styles.title}>Events</Text>
-                    <TouchableOpacity onPress={() => navController(navigation, "Create")} >
-                        <Ionicons name="add-circle-outline" style={{left: 280, top: -55, fontSize:45, color:'#4E3D42'}} />
-                    </TouchableOpacity>
                     <FlatList
                         data={eventArray}
                         // Vi bruger carKeys til at finde ID på den aktuelle bil og returnerer dette som key, og giver det med som ID til CarListItem
@@ -66,7 +74,7 @@ const Events = ({navigation}) => {
                                 <TouchableOpacity style={styles.label} onPress={() => handleSelectEvent(eventKeys[index])}>
                                     <Image style={styles.event} source={require("../../../assets/event.jpg")}/>
                                     <Text style={{fontWeight: "bold", fontSize: 20}}>{item.Name}</Text>
-                                    <Text> {item.Location}, {item.Time}</Text>
+                                    <Text> {item.Location}, {item.Day}/{item.Month}/{item.Year}, {item.Time}</Text>
                                     <Text style={{textAlign: "right"}}>Se mere</Text>
                                 </TouchableOpacity>
                             )
@@ -75,17 +83,18 @@ const Events = ({navigation}) => {
                 </View>
             </SafeAreaView>
         </ScrollView>
+        </View>
     );
 }
 
 export default Events;
 
-
+//Styling
 const styles = StyleSheet.create({
     container: {
         margin: 20,
         justifyContent:'center',
-        backgroundColor: '#E3DBDB'
+        backgroundColor: '#E3DBDB',
     },
     label: {
         flex: 1,
@@ -103,8 +112,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'left',
         color: '#4E3D42',
-        marginTop: 20,
-        marginLeft: 20,
+        marginTop: 55,
+        marginLeft: 30,
+        marginBottom: -45,
     },
     event: {
         height: '300%',

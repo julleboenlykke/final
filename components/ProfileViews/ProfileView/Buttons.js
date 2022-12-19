@@ -2,8 +2,10 @@ import {Pressable, Text} from "react-native";
 import Styles from "../../../globalStyles/Styles";
 import React from "react";
 
+// De tre knapper der vises i bunden af Profile siden
 function Buttons (props) {
     return <>
+        {/* Til at opdatere ens info */}
         <Pressable
             title={"Change profile"}
             style={Styles.btnAuth}
@@ -11,6 +13,8 @@ function Buttons (props) {
         >
             <Text style={{color: "white"}}>Change info</Text>
         </Pressable>
+
+        {/* Til at opdatere ens password */}
         <Pressable
             title={"Change Password"}
             style={{...Styles.btnAuth, marginTop: 5}}
@@ -18,6 +22,8 @@ function Buttons (props) {
         >
             <Text style={{color: "white"}}>Change Password</Text>
         </Pressable>
+
+        {/* Til at logge ud */}
         <Pressable
             title={"Log out"}
             style={{...Styles.btnAuth, marginTop: 5}}

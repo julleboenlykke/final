@@ -9,8 +9,9 @@ import CredentialsComponent from "./ProfileView/Credentials";
 import DetailsComponent from "./ProfileView/DetailsProfile";
 import Buttons from "./ProfileView/Buttons";
 
-
+// Funktion til Profile siden
 function ProfileScreen() {
+    // Alle variable der indgår på siden
     const height = useWindowDimensions().height
     const [isVisibleModalProfile, setProfileModalVisibility] = useState(false)
     const [isVisibleModalCredentials, setCredentialsModalVisibility] = useState(false)
@@ -24,6 +25,7 @@ function ProfileScreen() {
     const [month, setNewMonth] = useState(null)
     const [showDatePicker, setShowDatePicker] = useState(false)
 
+    // Bruges til at håndtere bekræftelsen af den dato der er valgt i fødselsdagstabellen
     const handleConfirm = (date) => {
         setNewDay(date.getDate())
         setNewMonth((date.getMonth())+1)
@@ -31,6 +33,7 @@ function ProfileScreen() {
         setShowDatePicker(false)
     };
 
+    // Herfra opdateres globalUser objektet
     const updateGlobalUser = () => {
         setGlobalUser({
             id: globalUser.id,
@@ -44,7 +47,8 @@ function ProfileScreen() {
         })
     }
 
-
+    // Bruges når brugeren har opdateret dens info, ved at nulstille input felterne
+    // Nulstiller værdierne for nedenstående variable; nogen sættes til null og resten til en tom string
     const cleanFields = () => {
         setNewPassword("")
         setNewFirstname("")
@@ -55,6 +59,9 @@ function ProfileScreen() {
         setOldPassword("")
     }
 
+    // Opdaterer password for en bruger ved først at verificere det gamle password med reauthenticateWithCredential
+    // Herefter kaldes updatePassword metoden, som opdaterer til det nye password, der er angivet i password variablen
+    // Hvis det lykkedes gives besked om det, hvis ikke, gives en error message
     const updateCredentials = () => {
         try {
             const user = firebase.auth().currentUser
@@ -74,6 +81,10 @@ function ProfileScreen() {
 
     }
 
+    // Bruges til at opdatere brugerens info i firebase databasen ved at lave et userDetails object
+    // userDetails indeholder den opdaterede bruger info
+    // Værdierne i userDetails objektet er baseret på værdierne i dee tilsvarende variabler, hvis de har en sand værdi
+    // Ellers bruges de tilsvarende værddier fra globalUser objektet
     const updateUser = () => {
         const userDetails = {
             birtDate: day ? day: globalUser.birtDate,
@@ -99,26 +110,35 @@ function ProfileScreen() {
         }
     }
 
+    // Bruges til at logge en bruger
+    // Først nulstilles globalUser til dets oprindelige tilstand med setGlobalUser funktionen
+    // Så kaldes signOut metoden fra firebase til at logge brugeren ud
     const handleLogOut = async () => {
         setGlobalUser({ id: null, birtDate: null, birthMonth: null, birthYear: null, firstname: null, lastname: null, username: null, countries: []});
         await firebase.auth().signOut()
     };
 
+    // Tjekker om username egenskabet for globalUser er true
     if (globalUser.username != null) {
+        // Hvis true, så return nedenstående
         return (
             <ScrollView style={{...Styles.scroll}}>
+                {/* Overskrift på siden */}
                 <View style={{...Styles.container}}>
                     <Text style={{...Styles.title, marginBottom: 0, marginTop: 100}}>Profile Page!</Text>
                     <View style={{margin: 10}}>
+                        {/* Profilbillede ikon */}
                         <View style={Styles.circle}><MaterialIcons
                             name="face"
                             size={50} color='#4E3D42'/></View>
                     </View>
+                    {/* Håndterer log ud funktionen */}
                     <DetailsComponent globalUser={globalUser}/>
                     <Buttons onPress={() => setProfileModalVisibility(true)}
                              onPress1={() => setCredentialsModalVisibility(true)}
                              onPress2={() => handleLogOut()}/>
 
+                    {/* Pop-up vindue til at opatere brugerens password */}
                     <ModalProfile minHeight={height}
                                   visible={isVisibleModalProfile}
                                   value={newFirstname}
@@ -137,6 +157,7 @@ function ProfileScreen() {
                                   onPress1={() => updateUser()}/>
 
 
+                    {/* Pop-up vindue til opdatere bruger info */}
                     <CredentialsComponent minHeight={height}
                                           visible={isVisibleModalCredentials}
                                           globalUser={globalUser}
@@ -151,12 +172,12 @@ function ProfileScreen() {
                 </View>
             </ScrollView>
         );
-    } else return <View style={Styles.container} ><ActivityIndicator size="large" color="#E3DBDB" /><Text>Loading</Text></View>
+    } else return <View style={Styles.container} ><ActivityIndicator size="large" color="#E3DBDB" /><Text>Loading...</Text></View>
 }
-
 
 export default ProfileScreen
 
+//Styling
 const stylesLocal = StyleSheet.create({
     btnLocalDateTime: {
         width: 200,

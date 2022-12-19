@@ -7,43 +7,49 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {formatDayOrMonth} from "../helperFunctions";
 import {AppContext} from "../AppContext";
 
-
+// Sign up funktion
 function SignUp({navigation}) {
-//Instatering af relevante statevaribler.Bidm mærke i måden hvorpå man henter en global bruger, defineret i vores AppContext.
+// Holder på data for den bruger der logger ind (f.eks. username)
     const [globalUser, setGlobalUser] = useContext(AppContext)
+
+    // Sørger for at indholdet på login siden tilpasses den pågældende skærm
+    // Herved ser det ens ud uanset hvor stor ens mobil skærm er
     const height = useWindowDimensions().height
+
+    // Variablerne der bruges til at oprette sig
     const [day, setDay] = useState("");
     const [month, setMonth] = useState("");
     const [year, setYear] = useState("");
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    // Tabel til at vælge fødselsdag
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-    // Comtroller til at styre navigering mellem sider i stacknavigator.
+    // Styring af navigationen mellem de forskellige sider
     const navController = (navigation, route) =>{
         navigation.navigate(route)
     }
 
-    // Comtroller til at styre fremvisning af datePicker komponent .
-
+    // Fremvisning af tabellen til at vælge fødselsdag
     const showDatePicker = () => {
         setDatePickerVisibility(true);
     };
 
-    // Comtroller til at styre fremvisning af datePicker komponent .
+    // Skjuler tabellen til at vælge fødselsdag
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
 
-    // Hjælper metode til at populerer felter koblet til den globale bruger
+    // Returnerer variablerne til at sign up
     const createUser = () => {
-        return {birtDate: day, birthMonth: month, birthYear: year, firstname: firstname, lastname: lastname, username: username }
+        return {birtDate: day, birthMonth: month, birthYear: year, firstname: firstname, lastname: lastname, username: email }
     }
 
 
-    // Opdaterer alle statevariabler, som relaterer sig til datoer
+    // Sætter start dato i fødselsdagstabellen til i dag
     const handleConfirm = (date) => {
         setDay(date.getDate())
         setMonth((date.getMonth())+1)
@@ -51,16 +57,12 @@ function SignUp({navigation}) {
         hideDatePicker();
     };
 
-
-    /*
-    * Metoden herunder håndterer oprettelse af brugere ved at anvende en prædefineret firebase metode
-    * signInWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
-    * Til sidst populeres felterne for den globale bruger med de indtastede oplysningerne i formularen
-    */
+    // Bruger forsøger at oprette sig ved at firebase opbevarer dataen i dens database
+    // Brugeroprettelsen eksekveres ved at indtaste fornavn, efternanv, fødselsdag, email og et password
     const handleSubmit = async() => {
         const user = createUser()
         try {
-            await firebase.auth().createUserWithEmailAndPassword(username, password);
+            await firebase.auth().createUserWithEmailAndPassword(email, password);
             firebase
                 .database()
                 .ref('/users/')
@@ -72,22 +74,22 @@ function SignUp({navigation}) {
                     birthYear: year,
                     firstname: firstname,
                     lastname: lastname,
-                    username: username,
-                    countries: []
+                    username: email,
                 })
             })
 
         } catch (error) {
-            //Error handling er ikke implementeret
-
+            // Kan firebase ikke oprette brugeren i databasen, så gives der en error message
             console.log(`Error: ${error.message}`);
         }
     }
 
-    //Layout af app
+    // Sign up sidens design/layout
     return (
+        // Styling af overskriften på login siden
         <View style={{...Styles.authContainer, minHeight: height, borderWidth: 1, textAlign: 'center' }}>
             <Text style={Styles.header}> Welcome to WeSocial</Text>
+            {/* Skaber inputfelt til at indtaste fornavn */}
             <View style={Styles.subContainer}>
                 <TextInput
                     value={firstname}
@@ -95,12 +97,14 @@ function SignUp({navigation}) {
                     placeholder={'Firstname'}
                     style={Styles.inputV2}
                 />
+                {/* Skaber inputfelt til at indtaste efternavn */}
                 <TextInput
                     value={lastname}
                     onChangeText={(lastname) => setLastname( lastname )}
                     placeholder={'Lastname'}
                     style={Styles.inputV2}
                 />
+                {/* Skaber tabel til at vælge fødselsdag */}
                 <Pressable style={Styles.btnCalender} title="Pick Birthdate" onPress={showDatePicker}>
                     <AntDesign name="calendar" size={24} color="#4E3D42" />
                     <Text style={{fontSize: 17, marginLeft: 2}} >Date Of Birth</Text>
@@ -112,12 +116,14 @@ function SignUp({navigation}) {
                     onCancel={hideDatePicker}
                 />
                 <Text style={{alignSelf: 'stretch', marginBottom: 20, borderBottomWidth: 1}} > {day === "" || month === "" || year === "" ? "Date not chosen" : formatDayOrMonth(day)  +"-" + formatDayOrMonth(month) + "-" + year }</Text>
+                {/* Skaber inputfelt til at indtaste email */}
                 <TextInput
-                    value={username}
-                    onChangeText={(username) => setUsername( username )}
+                    value={email}
+                    onChangeText={(username) => setEmail( username )}
                     placeholder={'E-Mail'}
                     style={Styles.inputV2}
                 />
+                {/* Skaber inputfelt til at indtaste password */}
                 <TextInput
                     value={password}
                     onChangeText={(password) => setPassword(password)}
@@ -125,6 +131,7 @@ function SignUp({navigation}) {
                     secureTextEntry={true}
                     style={Styles.inputV2}
                 />
+                {/* Knap til at sign up */}
                 <Pressable
                     title={'Sign Up'}
                     style={Styles.btnAuth}
@@ -133,6 +140,7 @@ function SignUp({navigation}) {
                     <Text style={{color: 'white'}} >Sign Up</Text>
                 </Pressable>
 
+                {/* Back to login knap der navigerer brugeren tilbage til login siden */}
                 <Pressable
                     title={'Back to Login'}
                     style={{...Styles.btnAuth, backgroundColor: 'white', borderWidth: 0.1, borderColor: '#4E3D42', marginTop: '4%'}}

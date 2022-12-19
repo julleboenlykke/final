@@ -1,10 +1,10 @@
-import {AuthStack, ProfileTab} from "./components/navigators/Navigators";
+import {AuthStack, AppTab} from "./components/navigators/Navigators";
 import {NavigationContainer} from "@react-navigation/native";
 import firebase from "firebase/compat";
 import React, { useEffect, useState} from "react";
-import {AppContext, StateProvider} from "./components/AppContext";
+import {StateProvider} from "./components/AppContext";
 
-
+// Her er Appens Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBYyGvmmFWDHyL0DnWuXhC1_Gx25EXv41M",
   authDomain: "eksamen-c7a2c.firebaseapp.com",
@@ -23,13 +23,12 @@ export default function App() {
   //const {globalUser, setGlobalUser } = useContext(AppContext);
   const [user, setUser] = useState({ loggedIn: false });
 
-  //Koden sikrer at kun én Firebase initieres under brug af appen.
+  // Her bliver Firebase initialiseret
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
 
-  //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-//Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
+  // Monitorerer om brugeren er logget ind eller ej
   function onAuthStateChange(callback) {
     return firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -40,7 +39,7 @@ export default function App() {
     });
   }
 
-  //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
+  // Aktiverer onAuthStateChange, som er en listener, for at monitorere om brugeren er online eller ej
   useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
     return () => {
@@ -48,7 +47,8 @@ export default function App() {
     };
   }, []);
 
-  //Her oprettes gæstekomponentsindhold, der udgøres af sign-up og login siderne
+  // Her er den side brugeren bliver mødt med, når de åbner appen,
+  // De kan logge ind på Login siden eller navigere til Sign up siden og oprette sig
   const ValidateUser = () => {
     return (
         <NavigationContainer>
@@ -56,11 +56,11 @@ export default function App() {
         </NavigationContainer>
     );
   }
-  const Profile = () => {
+  const Home = () => {
     return (
-        <NavigationContainer><ProfileTab/></NavigationContainer>
+        <NavigationContainer><AppTab/></NavigationContainer>
     );
   }
-  return (user.loggedIn ? <StateProvider><Profile/></StateProvider> :<StateProvider><ValidateUser/></StateProvider>) ;
+  return (user.loggedIn ? <StateProvider><Home/></StateProvider> :<StateProvider><ValidateUser/></StateProvider>) ;
 
 }

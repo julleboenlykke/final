@@ -3,8 +3,10 @@ import Styles from "../../../globalStyles/Styles";
 import {formatDayOrMonth} from "../../helperFunctions";
 import React from "react";
 
+// Detaljer på Profile siden
 function DetailsComponent (props) {
     return <>
+        {/* Tekst felt med brugerens fornavn */}
         <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}First Name</Text>
         <TextInput
             value={props.globalUser.firstname}
@@ -12,6 +14,8 @@ function DetailsComponent (props) {
             style={Styles.inputV2}
             editable={false}
         />
+
+        {/* Tekst felt med brugerens efternavn */}
         <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}Last Name</Text>
         <TextInput
             value={props.globalUser.lastname}
@@ -19,6 +23,8 @@ function DetailsComponent (props) {
             style={Styles.inputV2}
             editable={false}
         />
+
+        {/* Tekst felt med brugerens email */}
         <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}Email</Text>
         <TextInput
             value={props.globalUser.username}
@@ -26,6 +32,8 @@ function DetailsComponent (props) {
             style={Styles.inputV2}
             editable={false}
         />
+
+        {/* Tekst felt med brugerens fødselsdag */}
         <Text style={{textAlign: "left", fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}Birthday</Text>
         <TextInput
             value={formatDayOrMonth(props.globalUser.birtDate) + "-" + formatDayOrMonth(props.globalUser.birthMonth) + "-" + props.globalUser.birthYear}

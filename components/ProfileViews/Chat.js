@@ -1,19 +1,24 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList} from "react-native"
 import * as React from "react";
 
-function Chat ({navigation}) {
+// Chat funktion som pt. kun viser en overskrift på siden
+function Chat ({}) {
     return (
         <ScrollView style={styles.root}>
-            <View>
+            <View style={{paddingBottom: 30}}>
                 <Text style={styles.title}>
                     Chat
                 </Text>
+                <Text>Dette har ikke været muligt at etabelere i denne omgang, men billederne viser ideen og tankerne bag funktionen{'\n'}{'\n'}</Text>
+                <Image style={styles.event} source={require("../../assets/Chat1.png")}/>
+                <Text>{'\n'}</Text>
+                <Image style={styles.event} source={require("../../assets/Chat2.png")}/>
             </View>
         </ScrollView>
     )
 }
 
-//Lokal styling
+// Styling
 const styles = StyleSheet.create({
     root: {
         paddingLeft: 10,
@@ -22,14 +27,12 @@ const styles = StyleSheet.create({
     },
     text: {
         textAlign: 'left',
-        paddingBottom: 15,
-        paddingTop: 25,
         fontSize: 20,
         fontWeight: "bold",
         paddingLeft: 12,
     },
     event: {
-        height: 150,
+        height: 600,
         width: 350,
         resizeMode: "stretch",
     },

@@ -6,7 +6,10 @@ import {formatDayOrMonth} from "../../helperFunctions";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import React from "react";
 
+// Funktion til at skifte info (fornavn, efternavn og fødselsdag) på Profile siden
 function ModalProfile (props)  {
+
+    // Pop-up vindue der dukker op til at skifte info, når brugeren klikker "Change info"
     return <Modal style={{minHeight: props.minHeight, justifyContent: "center"}}
                   isVisible={props.visible}>
         <View style={{
@@ -16,19 +19,25 @@ function ModalProfile (props)  {
             alignItems: "center",
             height: "40%"
         }}>
+            {/* Øverst i pop-up vinduet står der "Change my info" */}
             <Text style={{fontSize: 20}}> Change My Info </Text>
+            {/* Tekstfelt til at skrive det nye fornavn ved opdatering */}
             <TextInput
                 value={props.value}
                 placeholder={props.globalUser.firstname}
                 onChangeText={props.onChangeText}
                 style={{...Styles.input, ...stylesLocal.modalTextInputLocal}}
             />
+
+            {/* Tekstfelt til at skrive det nye efternavn ved opdatering */}
             <TextInput
                 value={props.value1}
                 placeholder={props.globalUser.lastname}
                 onChangeText={props.onChangeText1}
                 style={{...Styles.input, ...stylesLocal.modalTextInputLocal}}
             />
+
+            {/* Tabel til opdatering af fødselsdag */}
             <Pressable style={{...Styles.btnCalender, ...stylesLocal.btnLocalDateTime}} title="Pick Birthdate"
                        onPress={(props.prop7)}>
                 <AntDesign name="calendar" size={24} color="black"/>
@@ -41,6 +50,8 @@ function ModalProfile (props)  {
                 onConfirm={props.onConfirm}
                 onCancel={props.onCancel}
             />
+
+            {/* Styling */}
             <View style={{
                 display: "flex",
                 flexDirection: "row",
@@ -49,6 +60,7 @@ function ModalProfile (props)  {
                 width: "100%",
                 height: "30%"
             }}>
+                {/* Knap i pop-up vinduet til at cancel de opdateringer, man har gang i */}
                 <Pressable
                     title={"Cancel"}
                     style={{...Styles.btnAuth, height: 50, width: "45%"}}
@@ -56,8 +68,10 @@ function ModalProfile (props)  {
                 >
                     <Text style={{color: "white"}}>Cancel</Text>
                 </Pressable>
+
+                {/* Knap i pop-up vinduet til at confirme de opdateringer, man har gang i */}
                 <Pressable
-                    title={"Update"}
+                    title={"Confirm"}
                     style={{...Styles.btnAuth, height: 50, width: "45%"}}
                     onPress={props.onPress1}
                 >
@@ -69,7 +83,7 @@ function ModalProfile (props)  {
 }
 export default ModalProfile
 
-
+//Styling
 const stylesLocal = StyleSheet.create({
     btnLocalDateTime: {
         width: 200,

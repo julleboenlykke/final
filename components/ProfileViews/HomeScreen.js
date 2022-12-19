@@ -8,7 +8,7 @@ import {useEffect, useState} from "react";
 import firebase from "firebase/compat";
 
 
-// Styling af HomeScreen
+// HomeScreen navigering
 const HomeScreen = ({navigation}) => {
 
     const [events,setEvents] = useState()
@@ -24,7 +24,7 @@ const HomeScreen = ({navigation}) => {
         }
     },[]);
 
-    // Vi viser ingenting hvis der ikke er data
+    // Hvis der ikke er nogen events, er siden tom
     if (!events) {
         return(
             <SafeAreaView style={styles.container}>
@@ -36,12 +36,12 @@ const HomeScreen = ({navigation}) => {
     }
 
     const handleSelectEvent = id => {
-        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher idet vi har tilsendt*/
+        /* Søger i blandt de forskellige events og finder event objektet, der matcher id'et */
         const event = Object.entries(events).find( event => event[0] === id /*id*/)
-        navigation.navigate('Event Details', { event });
+        navigation.navigate('Event Details home', { event });
     };
 
-    // Flatlist forventer et array. Derfor tager vi alle values fra vores cars objekt, og bruger som array til listen
+    // Tager værdierne fra event objects og bruger dem som array til vores flatlist
     const eventArray = Object.values(events);
     const eventKeys = Object.keys(events);
 
@@ -49,6 +49,7 @@ const HomeScreen = ({navigation}) => {
         <ScrollView style={{backgroundColor: '#E3DBDB'}}>
             <SafeAreaView style={styles.container}>
                 <View>
+                    {/* Øverste horisontale view med events, der kan scrrolles igennem */}
                     <Text style={styles.title}>Recommended</Text>
                     <FlatList horizontal
                               data={eventArray}
@@ -56,6 +57,7 @@ const HomeScreen = ({navigation}) => {
                               keyExtractor={(item, index) => eventKeys[index]}
                               renderItem={({ item, index }) => {
                                   return(
+                                      // Selve de events der er, som brugeren kan klikke sig ind på
                                       <TouchableOpacity style={styles.label} onPress={() => handleSelectEvent(eventKeys[index])}>
                                           <Image style={styles.event} source={require("../../assets/event.jpg")}/>
                                           <Text style={{fontWeight: "bold", fontSize: 20}}>{item.Name}</Text>
@@ -65,13 +67,14 @@ const HomeScreen = ({navigation}) => {
                                   )
                               }}
                     />
+                    {/* Mellemste horisontale view med events, der kan scrrolles igennem */}
                     <Text style={styles.title}>Popular Events</Text>
                     <FlatList horizontal
                               data={eventArray}
-                        // Vi bruger carKeys til at finde ID på den aktuelle bil og returnerer dette som key, og giver det med som ID til CarListItem
-                              keyExtractor={(item, index) => eventKeys[index]}
+                         keyExtractor={(item, index) => eventKeys[index]}
                               renderItem={({ item, index }) => {
                                   return(
+                                      // Selve de events der er, som brugeren kan klikke sig ind på
                                       <TouchableOpacity style={styles.label} onPress={() => handleSelectEvent(eventKeys[index])}>
                                           <Image style={styles.event} source={require("../../assets/event.jpg")}/>
                                           <Text style={{fontWeight: "bold", fontSize: 20}}>{item.Name}</Text>
@@ -81,13 +84,14 @@ const HomeScreen = ({navigation}) => {
                                   )
                               }}
                     />
+                    {/* Nederste horisontale view med events, der kan scrrolles igennem */}
                     <Text style={styles.title}>Near you</Text>
                     <FlatList horizontal
                               data={eventArray}
-                        // Vi bruger carKeys til at finde ID på den aktuelle bil og returnerer dette som key, og giver det med som ID til CarListItem
-                              keyExtractor={(item, index) => eventKeys[index]}
+                         keyExtractor={(item, index) => eventKeys[index]}
                               renderItem={({ item, index }) => {
                                   return(
+                                      // Selve de events der er, som brugeren kan klikke sig ind på
                                       <TouchableOpacity style={styles.label} onPress={() => handleSelectEvent(eventKeys[index])}>
                                           <Image style={styles.event} source={require("../../assets/event.jpg")}/>
                                           <Text style={{fontWeight: "bold", fontSize: 20}}>{item.Name}</Text>
@@ -103,6 +107,7 @@ const HomeScreen = ({navigation}) => {
     );
 }
 
+//Styling
 const Tab = createBottomTabNavigator();
 export default HomeScreen
 

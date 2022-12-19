@@ -1,29 +1,32 @@
-import {Text, View, TextInput, TouchableOpacity, useWindowDimensions} from "react-native";
+import {Text, View, TextInput, TouchableOpacity, useWindowDimensions, Alert} from "react-native";
 import Styles from "../../globalStyles/Styles";
 import {useContext, useState} from "react";
 import firebase from "firebase/compat";
 import {AppContext} from "../AppContext";
 
 
-
+// Login funktion
 function Login({navigation}) {
-//Instantiering af statevariabler til brug i appen
+
+    // Holder på data for den bruger der logger ind (f.eks. username)
     const [globalUser, setGlobalUser] = useContext(AppContext)
+
+    // Sørger for at indholdet på login siden tilpasses den pågældende skærm
+    // Herved ser det ens ud uanset hvor stor ens mobil skærm er
     const height = useWindowDimensions().height
+
+    // Variablerne username og password bruges til at logge ind med
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    // Comtroller til at styre navigering mellem sider i stacknavigator.
+
+    // Styring af navigationen mellem de forskellige sider
     const navController = (navigation, route) =>{
         navigation.navigate(route)
     }
 
-    /*
-    * Handlesubmit.
-    * 1. Først forsøges login ved brug af en prædefineret sign-in metode, der modtager to arguemnter; email og password
-    * 2. Dernæst foretages et kald til en tilkoblede realtime database.
-    *    Metoden henter alle brugere og leder efter den bruger, som har en email tilsvarende til den mailadresse, som er gemt i email-variablen
-    *    Når brugeren er fundet, hentes alle de dertilhørende oplysninger, hvorefter disse gemmes i den globale brugervariabel.
-    * */
+    // Brugeren forsøger at logge ind med username (email) og password, og firebase tjekker, om brugerens data findes
+    // Firebase tjekker dette ved at lave et kald til realtime database
+    // Hvis brugeren bliver fundet i databasen, så hentes brugerens resterende oplysninger også (fødselsdag, fornavn og efternavn)
     const handleSubmit = async () => {
         try {
             await firebase.auth().signInWithEmailAndPassword(username, password);
@@ -47,17 +50,19 @@ function Login({navigation}) {
                     }
 
                 });
-        } catch (error){
-            //Error handling er ikke implementeret
-            console.log(error.message)
+        } catch (error) {
+            // Kan firebase ikke finde brugeren i databasen, så gives der en error message
+            Alert.alert(`Error: ${error.message}`);
         }
     }
 
-    //Layout af app
+    // Login sidens design/layout
     return (
+        // Styling af overskriften på login siden
         <View style={{...Styles.authContainer, minHeight: height}}>
             <Text style={Styles.header}> Welcome to WeSocial</Text>
             <Text>{'\n'}</Text>
+            {/* Skaber inputfelt til at indtaste username */}
             <View style={Styles.subContainer} >
                 <TextInput
                     value={username}
@@ -65,6 +70,7 @@ function Login({navigation}) {
                     placeholder={'Email'}
                     style={Styles.input}
                 />
+                {/* Skaber inputfelt til at taste password */}
                 <TextInput
                     value={password}
                     onChangeText={(password) => setPassword( password )}
@@ -73,6 +79,7 @@ function Login({navigation}) {
                     style={Styles.input}
                 />
                 <Text>{'\n'}</Text>
+                {/* Knap til at sign in */}
                 <TouchableOpacity
                     title={'Login'}
                     style={Styles.btnAuth}
@@ -80,7 +87,10 @@ function Login({navigation}) {
                 >
                     <Text style={{color: 'white'}}>Sign In</Text>
                 </TouchableOpacity>
+                {/* Tekst */}
                 <Text style={{marginTop: '5%', fontSize:'15'}}>Not a User?</Text>
+
+                {/* Sign up knap der navigerer til en side, hvor nye brugere kan oprette sig */}
                 <TouchableOpacity
                     title={'Sign up here'}
                     style={{...Styles.btnAuth, backgroundColor: 'white', borderWidth: 0.1, borderColor: '#4E3D42'}}

@@ -1,9 +1,10 @@
-import {StyleSheet, Dimensions} from "react-native";
+import {StyleSheet} from "react-native";
 
-
+// Styling
 const Styles = StyleSheet.create({
     scroll: {
         backgroundColor: "#E3DBDB",
+        paddingBottom: '15%',
     },
     container: {
         flex: 1,
@@ -14,10 +15,9 @@ const Styles = StyleSheet.create({
     },
     authContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: "#E3DBDB",
         paddingTop: '20%',
+        paddingBottom: '100%',
     },
     subContainer: {
         flex: 0.95,
