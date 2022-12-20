@@ -59,8 +59,8 @@ Templaten er en udvidelse af de opgaver vi har fået stillet i timerne, hvor fun
 
 Vi har også brugt kode fra vores egne godkendelsesopgaver.
 
-## Short Video Demo:
-https://youtu.be/9H3_mPNsP80
+## Video gennemgang:
+
 
 ## Billeder er appen
 <img src='/assets/AppPictures/Login.PNG' width='400' height='790'>
