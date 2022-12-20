@@ -20,6 +20,7 @@ function ProfileScreen() {
     const [oldPassword, setOldPassword] = useState("")
     const [newFirstname, setNewFirstname] = useState("")
     const [newLastname, setNewLastname] = useState("");
+    const [newInterests, setNewInterets] = useState("")
     const [year, setNewYear] = useState(null)
     const [day, setNewDay] = useState(null)
     const [month, setNewMonth] = useState(null)
@@ -43,6 +44,7 @@ function ProfileScreen() {
             firstname: newFirstname ? newFirstname : globalUser.firstname,
             lastname: newLastname ? newLastname : globalUser.lastname,
             username: globalUser.username,
+            interests: newInterests ? newInterests : globalUser.interests,
             countries:globalUser.countries.length > 0 ? globalUser.countries : []
         })
     }
@@ -53,6 +55,7 @@ function ProfileScreen() {
         setNewPassword("")
         setNewFirstname("")
         setNewLastname("")
+        setNewInterets("")
         setNewDay(null)
         setNewMonth(null)
         setNewYear(null)
@@ -92,6 +95,7 @@ function ProfileScreen() {
             birthYear: year ? year: globalUser.birthYear,
             firstname: newFirstname ? newFirstname : globalUser.firstname,
             lastname: newLastname ? newLastname : globalUser.lastname,
+            interests: newInterests ? newInterests : globalUser.interests,
             username: globalUser.username,
             countries:globalUser.countries.length > 0 ? globalUser.countries : []
         }
@@ -114,7 +118,7 @@ function ProfileScreen() {
     // Først nulstilles globalUser til dets oprindelige tilstand med setGlobalUser funktionen
     // Så kaldes signOut metoden fra firebase til at logge brugeren ud
     const handleLogOut = async () => {
-        setGlobalUser({ id: null, birtDate: null, birthMonth: null, birthYear: null, firstname: null, lastname: null, username: null, countries: []});
+        setGlobalUser({ id: null, birtDate: null, birthMonth: null, birthYear: null, firstname: null, lastname: null, username: null, interests: null,countries: []});
         await firebase.auth().signOut()
     };
 
@@ -146,6 +150,8 @@ function ProfileScreen() {
                                   onChangeText={(firstname) => setNewFirstname(firstname)}
                                   value1={newLastname}
                                   onChangeText1={(lastname) => setNewLastname(lastname)}
+                                  value2={newInterests}
+                                  onChangeText2={(interests) => setNewInterets(interests)}
                                   prop7={() => setShowDatePicker(true)}
                                   day={day}
                                   month={month}

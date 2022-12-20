@@ -15,6 +15,8 @@ const Styles = StyleSheet.create({
     },
     authContainer: {
         flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: "#E3DBDB",
         paddingTop: '20%',
         paddingBottom: '100%',

@@ -41,6 +41,15 @@ function DetailsComponent (props) {
             style={Styles.inputV2}
             editable={false}
         />
+
+        {/* Tekst felt med brugerens interesser */}
+        <Text style={{fontWeight: 'bold', color: '#4E3D42'}}>{'\n'}Interests</Text>
+        <TextInput
+            value={props.globalUser.interests}
+            placeholder={props.globalUser.interests}
+            style={Styles.inputV2}
+            editable={false}
+        />
     </>;
 }
 export default DetailsComponent;

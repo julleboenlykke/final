@@ -1,8 +1,9 @@
-import {Text, View, TextInput, TouchableOpacity, useWindowDimensions, Alert} from "react-native";
+import {Text, View, TextInput, TouchableOpacity, useWindowDimensions, Alert, Platform, KeyboardAvoidingView, StyleSheet, ScrollView} from "react-native";
 import Styles from "../../globalStyles/Styles";
 import {useContext, useState} from "react";
 import firebase from "firebase/compat";
 import {AppContext} from "../AppContext";
+
 
 
 // Login funktion
@@ -58,7 +59,9 @@ function Login({navigation}) {
 
     // Login sidens design/layout
     return (
-        // Styling af overskriften på login siden
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView style={Styles.scroll}>
+            {/*Styling af overskriften på login siden*/}
         <View style={{...Styles.authContainer, minHeight: height}}>
             <Text style={Styles.header}> Welcome to WeSocial</Text>
             <Text>{'\n'}</Text>
@@ -100,8 +103,17 @@ function Login({navigation}) {
                 </TouchableOpacity>
             </View>
         </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 
 
 export default Login
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        backgroundColor: '#E3DBDB'
+    },
+});

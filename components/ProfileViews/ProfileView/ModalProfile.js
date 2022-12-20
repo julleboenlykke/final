@@ -6,7 +6,7 @@ import {formatDayOrMonth} from "../../helperFunctions";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import React from "react";
 
-// Funktion til at skifte info (fornavn, efternavn og fødselsdag) på Profile siden
+// Funktion til at skifte info (fornavn, efternavn, fødselsdag og interesser) på Profile siden
 function ModalProfile (props)  {
 
     // Pop-up vindue der dukker op til at skifte info, når brugeren klikker "Change info"
@@ -21,7 +21,7 @@ function ModalProfile (props)  {
         }}>
             {/* Øverst i pop-up vinduet står der "Change my info" */}
             <Text style={{fontSize: 20}}> Change My Info </Text>
-            {/* Tekstfelt til at skrive det nye fornavn ved opdatering */}
+            {/* Tekstfelt til at skrive det nyt fornavn ved opdatering */}
             <TextInput
                 value={props.value}
                 placeholder={props.globalUser.firstname}
@@ -29,11 +29,19 @@ function ModalProfile (props)  {
                 style={{...Styles.input, ...stylesLocal.modalTextInputLocal}}
             />
 
-            {/* Tekstfelt til at skrive det nye efternavn ved opdatering */}
+            {/* Tekstfelt til at skrive det nyt efternavn ved opdatering */}
             <TextInput
                 value={props.value1}
                 placeholder={props.globalUser.lastname}
                 onChangeText={props.onChangeText1}
+                style={{...Styles.input, ...stylesLocal.modalTextInputLocal}}
+            />
+
+            {/* Tekstfelt til at skrive det nye interesser */}
+            <TextInput
+                value={props.value2}
+                placeholder={props.globalUser.interests}
+                onChangeText={props.onChangeText2}
                 style={{...Styles.input, ...stylesLocal.modalTextInputLocal}}
             />
 

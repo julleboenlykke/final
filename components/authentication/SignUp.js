@@ -1,4 +1,4 @@
-import {Text, TextInput, useWindowDimensions, View, Pressable} from "react-native";
+import {Text, TextInput, useWindowDimensions, View, Pressable, KeyboardAvoidingView, Platform, StyleSheet, ScrollView} from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import Styles from "../../globalStyles/Styles";
 import {useContext, useState} from "react";
@@ -23,6 +23,7 @@ function SignUp({navigation}) {
     const [firstname, setFirstname] = useState("");
     const [lastname, setLastname] = useState("");
     const [email, setEmail] = useState("");
+    const [interests, setInterests] = useState("");
     const [password, setPassword] = useState("");
 
     // Tabel til at vælge fødselsdag
@@ -45,7 +46,7 @@ function SignUp({navigation}) {
 
     // Returnerer variablerne til at sign up
     const createUser = () => {
-        return {birtDate: day, birthMonth: month, birthYear: year, firstname: firstname, lastname: lastname, username: email }
+        return {birtDate: day, birthMonth: month, birthYear: year, firstname: firstname, lastname: lastname, username: email, interests: interests }
     }
 
 
@@ -58,7 +59,7 @@ function SignUp({navigation}) {
     };
 
     // Bruger forsøger at oprette sig ved at firebase opbevarer dataen i dens database
-    // Brugeroprettelsen eksekveres ved at indtaste fornavn, efternanv, fødselsdag, email og et password
+    // Brugeroprettelsen eksekveres ved at indtaste fornavn, efternavn, fødselsdag, email og et password
     const handleSubmit = async() => {
         const user = createUser()
         try {
@@ -75,6 +76,7 @@ function SignUp({navigation}) {
                     firstname: firstname,
                     lastname: lastname,
                     username: email,
+                    interests: interests,
                 })
             })
 
@@ -86,7 +88,9 @@ function SignUp({navigation}) {
 
     // Sign up sidens design/layout
     return (
-        // Styling af overskriften på login siden
+        <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+            <ScrollView style={Styles.scroll}>
+            {/* Styling af overskriften på login siden*/}
         <View style={{...Styles.authContainer, minHeight: height, borderWidth: 1, textAlign: 'center' }}>
             <Text style={Styles.header}> Welcome to WeSocial</Text>
             {/* Skaber inputfelt til at indtaste fornavn */}
@@ -116,6 +120,13 @@ function SignUp({navigation}) {
                     onCancel={hideDatePicker}
                 />
                 <Text style={{alignSelf: 'stretch', marginBottom: 20, borderBottomWidth: 1}} > {day === "" || month === "" || year === "" ? "Date not chosen" : formatDayOrMonth(day)  +"-" + formatDayOrMonth(month) + "-" + year }</Text>
+                {/*Skaber inputfelt til at indtaste interesser*/}
+                <TextInput
+                    value={interests}
+                    onChangeText={(interests) => setInterests( interests )}
+                    placeholder={'Interests'}
+                    style={Styles.inputV2}
+                />
                 {/* Skaber inputfelt til at indtaste email */}
                 <TextInput
                     value={email}
@@ -150,7 +161,15 @@ function SignUp({navigation}) {
                 </Pressable>
             </View>
         </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
 export default SignUp
 
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        backgroundColor: '#E3DBDB'
+    },
+});
