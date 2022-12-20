@@ -63,10 +63,10 @@ Vi har også brugt kode fra vores egne godkendelsesopgaver.
 https://youtu.be/9H3_mPNsP80
 
 ## Billeder er appen
-<img src='/assets/AppPictures/Login.PNG' width='400'height='790'>
-<img src='/assets/AppPictures/SignUp.PNG' width='400' height='790'>
+<img src='/assets/AppPictures/Login.PNG' width='400' height='790'>
+<img src='/assets/AppPictures/SignUp.PNG' width='400'  height='790'>
 <img src='/assets/AppPictures/HomeScreen.PNG' width='400' height='790'>
-<img src='/assets/AppPictures/Events.PNG' width='400' height='790'>  
+<img src='/assets/AppPictures/Events.PNG' width='400' height='790'>
 <img src='/assets/AppPictures/Create.PNG' width='400' height='790'>
 <img src='/assets/AppPictures/Details1.PNG' width='400' height='790'>
 <img src='/assets/AppPictures/Details2.PNG' width='400' height='790'>
