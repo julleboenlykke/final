@@ -1,8 +1,8 @@
 # WeSocial
 
 ## Beskrivelse
-WeSocial er en social-begivenhed-app hvor hvor man kan møde nye mennesker med samme interesser som en selv. 
-Man kan deltagere på allerede eksisterende begivenheder, indenfor den kategori man helt vil, 
+WeSocial er en social-begivenhed-app hvor man kan møde nye mennesker med samme interesser som en selv. 
+Man kan deltagere i allerede eksisterende begivenheder, indenfor den kategori man helst vil, 
 eller selv oprette en begivenhed med den interesse der interesser en mest. 
 Så tøv ikke med at dykke ned i WeSocial universet, det vil kun give en flere bekendtskaber som har samme interesser som en selv.
 
@@ -47,7 +47,7 @@ Appen gør brug af Firebase Realtime Database og Authentication
 ## Hvordan køres appen
 For at teste appen:
 1. Download koden fra GitHub
-2. Åben appen i ... og sikrer dig at du er i den rigtige mappe i terminalen
+2. Åben koden i dit kodeprogram, fx WebStorm og sikrer dig at du er i den rigtige mappe i terminalen
 3. Kør npm install
 4. Kør npm start 
 
@@ -60,7 +60,7 @@ Templaten er en udvidelse af de opgaver vi har fået stillet i timerne, hvor fun
 Vi har også brugt kode fra vores egne godkendelsesopgaver.
 
 ## Video gennemgang:
-
+https://youtu.be/UGFCpJ4DkG8
 
 ## Billeder er appen
 <img src='/assets/AppPictures/Login.PNG' width='400' height='790'>
